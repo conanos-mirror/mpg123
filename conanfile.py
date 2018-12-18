@@ -60,6 +60,7 @@ class Mpg123Conan(ConanFile):
             self.copy("*", dst=os.path.join(self.package_folder,"bin"), src=os.path.join(self.build_folder, output_relpath ), excludes="libmpg123.*")
             self.copy("mpg123.h",dst=os.path.join(self.package_folder,"include"), src=os.path.join(self.build_folder,self._source_subfolder,"ports","MSVC++"))
             self.copy("mpg123.h.in",dst=os.path.join(self.package_folder,"include"), src=os.path.join(self.build_folder,self._source_subfolder,"src","libmpg123"))
+            self.copy("fmt123.h",dst=os.path.join(self.package_folder,"include"), src=os.path.join(self.build_folder,self._source_subfolder,"src","libmpg123"))
 
             replacements_h_in = {
                 "@PACKAGE_VERSION@"     :    "1.25.10",
