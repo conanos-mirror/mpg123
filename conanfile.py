@@ -59,7 +59,18 @@ class Mpg123Conan(ConanFile):
             self.copy("libmpg123.dll", dst=os.path.join(self.package_folder,"bin"), src=os.path.join(self.build_folder, output_relpath))
             self.copy("*", dst=os.path.join(self.package_folder,"bin"), src=os.path.join(self.build_folder, output_relpath ), excludes="libmpg123.*")
             self.copy("mpg123.h",dst=os.path.join(self.package_folder,"include"), src=os.path.join(self.build_folder,self._source_subfolder,"ports","MSVC++"))
-            
+            self.copy("mpg123.h.in",dst=os.path.join(self.package_folder,"include"), src=os.path.join(self.build_folder,self._source_subfolder,"src","libmpg123"))
+
+            replacements_h_in = {
+                "@PACKAGE_VERSION@"     :    "1.25.10",
+                "@API_VERSION@"         :    "44",
+                "@INCLUDE_STDLIB_H@"    :    "#include <stdlib.h>",
+                "@INCLUDE_SYS_TYPE_H@"  :    "#include <sys/types.h>"
+            }
+
+            for s, r in replacements_h_in.items():
+                tools.replace_in_file(os.path.join(self.package_folder,"include","mpg123.h.in"),s,r)
+
             tools.mkdir(os.path.join(self.package_folder,"lib","pkgconfig"))
             shutil.copyfile(os.path.join(self.build_folder,self._source_subfolder,"libmpg123.pc.in"),
                             os.path.join(self.package_folder,"lib","pkgconfig", "libmpg123.pc"))
